@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 
 export default function Navigation() {
   return (
-    <div>
+    <div className="flex justify-between py-3 items-center">
       <Link to="/tasks">
-        <h1>Tasks App</h1>
+        <h1 className="font-bold text-3xl mb-4">Tasks App</h1>
       </Link>
-      <button>
+      <button className="bg-indigo-500 p-3 rounded-lg text-white">
         <Link to="/tasks-create">Create Task</Link>
       </button>
     </div>
