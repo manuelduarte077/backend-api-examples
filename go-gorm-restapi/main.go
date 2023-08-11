@@ -19,7 +19,15 @@ func main() {
 
 	/// Creamos el router
 	r := mux.NewRouter()
+
+	/// Routes
 	r.HandleFunc("/", routes.HomeHandler)
+
+	/// User router
+	r.HandleFunc("/users", routes.GetUsersHandler).Methods("GET")
+	r.HandleFunc("/users/{id}", routes.GetUserHandler).Methods("GET")
+	r.HandleFunc("/users", routes.CreateUserHandler).Methods("POST")
+	r.HandleFunc("/users/{id}", routes.DeleteUserHandler).Methods("DELETE")
 
 	http.ListenAndServe(":3000", r)
 
