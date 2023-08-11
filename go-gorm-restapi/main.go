@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github/manuelduarte077/go-gorm-restapi/db"
 	"github/manuelduarte077/go-gorm-restapi/routes"
 	"net/http"
 
@@ -8,6 +9,9 @@ import (
 )
 
 func main() {
+
+	/// Conectamos a la base de datos
+	db.DBConnect()
 
 	/// Creamos el router
 	r := mux.NewRouter()
