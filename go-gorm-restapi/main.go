@@ -35,6 +35,12 @@ func main() {
 	r.HandleFunc("/groups", routes.CreateGroupHandler).Methods("POST")
 	r.HandleFunc("/groups/{id}", routes.DeleteGroupHandler).Methods("DELETE")
 
+	/// Task router
+	r.HandleFunc("/tasks", routes.GetsTasksHandler).Methods("GET")
+	r.HandleFunc("/tasks/{id}", routes.GetTaskHandler).Methods("GET")
+	r.HandleFunc("/tasks", routes.CreateTaskHandler).Methods("POST")
+	r.HandleFunc("/tasks/{id}", routes.DeleteTaskHandler).Methods("DELETE")
+
 	http.ListenAndServe(":3000", r)
 
 }

@@ -28,7 +28,7 @@ func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db.DB.Model(&user).Association("Groups").Find(&user.Groups) // SELECT * FROM groups WHERE user_id = user.ID
-	json.NewEncoder(w).Encode(user)                             // Si no hay error, devolvemos el usuario
+	json.NewEncoder(w).Encode(&user)                            // Si no hay error, devolvemos el usuario
 }
 
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +42,7 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))         // Y el mensaje de error
 	}
 
-	json.NewEncoder(w).Encode(user) // Si no hay error, devolvemos el usuario creado
+	json.NewEncoder(w).Encode(&user) // Si no hay error, devolvemos el usuario creado
 
 }
 

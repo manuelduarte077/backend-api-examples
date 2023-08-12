@@ -17,8 +17,8 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetGroupHandler(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)             // Obtenemos los parámetros de la URL
 	var group models.Group            // Creamos una instancia de Group
+	params := mux.Vars(r)             // Obtenemos los parámetros de la URL
 	db.DB.First(&group, params["id"]) // SELECT * FROM groups WHERE id = params["id"]
 
 	if group.ID == 0 {
@@ -28,7 +28,7 @@ func GetGroupHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db.DB.Model(&group).Association("Tasks").Find(&group.Tasks) // SELECT * FROM tasks WHERE group_id = group.ID
-	json.NewEncoder(w).Encode(group)                            // Si no hay error, devolvemos el grupo
+	json.NewEncoder(w).Encode(&group)                           // Si no hay error, devolvemos el grupo
 }
 
 func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +42,7 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))         // Y el mensaje de error
 	}
 
-	json.NewEncoder(w).Encode(group) // Si no hay error, devolvemos el grupo creado
+	json.NewEncoder(w).Encode(&group) // Si no hay error, devolvemos el grupo creado
 
 }
 
