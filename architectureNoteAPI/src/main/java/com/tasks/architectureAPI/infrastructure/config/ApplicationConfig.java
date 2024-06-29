@@ -20,6 +20,7 @@ public class ApplicationConfig {
                 new RetrieveTaskUseCaseImpl(taskRepositoryPort),
                 new UpdateTaskUseCaseImpl(taskRepositoryPort),
                 new DeleteTaskUseCaseImpl(taskRepositoryPort),
+
                 getAdditionalTaskInfoUseCase
         );
     }
