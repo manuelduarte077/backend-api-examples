@@ -10,3 +10,5 @@ type Task struct {
 	Completed   bool   `gorm:"default:false" json:"done"`
 	GroupID     uint   `json:"group_id"`
 }
+
+

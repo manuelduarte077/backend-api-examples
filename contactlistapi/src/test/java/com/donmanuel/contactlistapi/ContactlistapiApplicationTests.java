@@ -1,13 +1,13 @@
-package com.tasks.architectureAPI;
+package com.donmanuel.contactlistapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ArchitectureApiApplicationTests {
+class ContactlistapiApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
