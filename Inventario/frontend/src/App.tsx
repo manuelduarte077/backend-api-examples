@@ -1,12 +1,19 @@
-import ProductList from "./components/ProductList";
+import Footer from "./components/hero/Footer";
+import Header from "./components/hero/Header";
+import ProductScreen from "./features/product/ProductScreen";
 
 function App() {
   return (
-    <>
-      <h1>Inventario de Productos</h1>
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <Header />
 
-      <ProductList />
-    </>
+      {/* Main */}
+      <ProductScreen />
+
+      {/* Footer */}
+      <Footer />
+    </div>
   );
 }
 
