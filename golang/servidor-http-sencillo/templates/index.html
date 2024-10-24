@@ -1,0 +1,24 @@
+<!-- /templates/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servidor HTTP Sencillo</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Servidor HTTP Sencillo con Go</h1>
+    <form action="/" method="POST">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+        <input type="submit" value="Enviar">
+    </form>
+
+    <h2>Respuesta del formulario:</h2>
+    {{if .Name}}
+        <p>Hola, {{.Name}}!</p>
+    {{end}}
+    <script src="/static/script.js"></script>
+</body>
+</html>

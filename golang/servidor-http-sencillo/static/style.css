@@ -1,0 +1,22 @@
+/* /static/style.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+form {
+  margin-top: 20px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input[type="submit"] {
+  margin-left: 10px;
+}
