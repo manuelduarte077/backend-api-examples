@@ -1,90 +1,89 @@
 package tasks
 
 import (
-	"encoding/json"
-	"io/ioutil"
-	"os"
+	"fmt"
 )
 
-const taskFile = "tasks.json"
-
 type Task struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Complete bool   `json:"complete"`
+	ID       int
+	Name     string
+	Complete bool
 }
 
-func loadTasks() ([]Task, error) {
-	if _, err := os.Stat(taskFile); os.IsNotExist(err) {
-		return []Task{}, nil // Si no existe, empezamos con una lista vacía
+// AddTask adds a new task to the database
+func AddTask(name string) error {
+	db, err := InitDB()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	insertTaskSQL := `INSERT INTO tasks (name, complete) VALUES (?, false)`
+	_, err = db.Exec(insertTaskSQL, name)
+	if err != nil {
+		return fmt.Errorf("error inserting task: %v", err)
 	}
 
-	file, err := ioutil.ReadFile(taskFile)
+	return nil
+}
+
+// ListTasks retrieves all tasks from the database
+func ListTasks() ([]Task, error) {
+	db, err := InitDB()
 	if err != nil {
 		return nil, err
 	}
+	defer db.Close()
+
+	rows, err := db.Query(`SELECT id, name, complete FROM tasks`)
+	if err != nil {
+		return nil, fmt.Errorf("error retrieving tasks: %v", err)
+	}
+	defer rows.Close()
 
 	var tasks []Task
-	if err := json.Unmarshal(file, &tasks); err != nil {
-		return nil, err
+	for rows.Next() {
+		var task Task
+		err := rows.Scan(&task.ID, &task.Name, &task.Complete)
+		if err != nil {
+			return nil, fmt.Errorf("error scanning task: %v", err)
+		}
+		tasks = append(tasks, task)
 	}
 
 	return tasks, nil
 }
 
-func saveTasks(tasks []Task) error {
-	file, err := json.MarshalIndent(tasks, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	return ioutil.WriteFile(taskFile, file, 0644)
-}
-
-func AddTask(name string) error {
-	tasks, err := loadTasks()
-	if err != nil {
-		return err
-	}
-
-	id := len(tasks) + 1
-	tasks = append(tasks, Task{ID: id, Name: name, Complete: false})
-
-	return saveTasks(tasks)
-}
-
-func ListTasks() ([]Task, error) {
-	return loadTasks()
-}
-
+// CompleteTask marks a task as completed in the database
 func CompleteTask(id int) error {
-	tasks, err := loadTasks()
+	db, err := InitDB()
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
-	for i, task := range tasks {
-		if task.ID == id {
-			tasks[i].Complete = true
-			break
-		}
+	updateTaskSQL := `UPDATE tasks SET complete = true WHERE id = ?`
+	_, err = db.Exec(updateTaskSQL, id)
+	if err != nil {
+		return fmt.Errorf("error updating task: %v", err)
 	}
 
-	return saveTasks(tasks)
+	return nil
 }
 
+// DeleteTask removes a task from the database
 func DeleteTask(id int) error {
-	tasks, err := loadTasks()
+	db, err := InitDB()
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
-	filtered := tasks[:0]
-	for _, task := range tasks {
-		if task.ID != id {
-			filtered = append(filtered, task)
-		}
+	deleteTaskSQL := `DELETE FROM tasks WHERE id = ?`
+	_, err = db.Exec(deleteTaskSQL, id)
+	if err != nil {
+		return fmt.Errorf("error deleting task: %v", err)
 	}
 
-	return saveTasks(filtered)
+	return nil
 }
